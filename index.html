@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mega Seguros | Seguro Auto a partir de R$ 91/mês</title>
+<meta name="description" content="Faça seu seguro auto com apólice individual no seu nome, indenização em até 30 dias e assistência 24h. Fale agora com um especialista Mega Seguros.">
+
+<!-- ============================================================
+  PIXEL / TAGS DE ANÚNCIO
+  Substituir SEU_PIXEL_ID pelo Meta Pixel real e ativar o evento
+  "Lead" no fbq('track','Lead') ao final do formulário.
+============================================================= -->
+<!--
+<script>
+!function(f,b,e,v,n,t,s){...}(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', 'SEU_PIXEL_ID');
+fbq('track', 'PageView');
+</script>
+-->
+
+<style>
+  :root{
+    --verde: #0d3b34;
+    --verde-escuro: #0a2e29;
+    --vinho: #7d2530;
+    --vinho-escuro: #631c25;
+    --creme: #f4ece0;
+    --creme-2: #efe4d4;
+    --cinza-texto: #4a4a4a;
+    --branco: #ffffff;
+    --sombra: 0 12px 30px rgba(13,59,52,0.15);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color:#1c1c1c;
+    background:var(--creme);
+    line-height:1.5;
+  }
+  img{max-width:100%; display:block;}
+  a{text-decoration:none; color:inherit;}
+  .container{max-width:1180px; margin:0 auto; padding:0 20px;}
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    background:var(--vinho); color:#fff; font-weight:700; font-size:1rem;
+    padding:16px 28px; border-radius:8px; border:none; cursor:pointer;
+    transition:background .2s, transform .2s;
+  }
+  .btn:hover{background:var(--vinho-escuro); transform:translateY(-1px);}
+  .btn-outline{
+    background:transparent; border:2px solid #fff; color:#fff;
+  }
+  .btn-outline:hover{background:rgba(255,255,255,.12);}
+  .btn-full{width:100%;}
+  .eyebrow{
+    display:inline-block; background:rgba(125,37,48,.1); color:var(--vinho);
+    font-weight:700; font-size:.78rem; letter-spacing:.06em; text-transform:uppercase;
+    padding:6px 14px; border-radius:999px; margin-bottom:16px;
+  }
+
+  /* HEADER */
+  header{
+    background:var(--creme-2); padding:16px 0; border-bottom:1px solid rgba(0,0,0,.06);
+    position:sticky; top:0; z-index:50;
+  }
+  header .container{display:flex; align-items:center; justify-content:space-between; gap:16px;}
+  .logo{display:flex; align-items:center; gap:10px; font-weight:800;}
+  .logo-mark{
+    width:36px; height:36px; position:relative; flex-shrink:0;
+  }
+  .logo-mark svg{width:100%; height:100%;}
+  .logo-text{line-height:1.05;}
+  .logo-text .top{font-size:1.15rem; font-weight:800; color:#3d3d3d; letter-spacing:.5px;}
+  .logo-text .bottom{font-size:.62rem; font-weight:700; color:var(--vinho); letter-spacing:.14em;}
+  header .btn{padding:11px 18px; font-size:.9rem;}
+
+  /* HERO */
+  .hero{
+    background:linear-gradient(120deg, var(--verde) 0%, var(--verde-escuro) 100%);
+    color:#fff; padding:56px 0 40px;
+  }
+  .hero .container{
+    display:grid; grid-template-columns:1.05fr .95fr; gap:40px; align-items:center;
+  }
+  .hero h1{font-size:2.4rem; line-height:1.15; margin-bottom:18px;}
+  .hero h1 span{color:#f1c9c9;}
+  .hero p.lead{font-size:1.08rem; color:#e6efec; margin-bottom:26px; max-width:520px;}
+  .hero-cta-note{margin-top:12px; font-size:.85rem; color:#cfe0da;}
+  .hero-badges{display:flex; gap:10px; flex-wrap:wrap; margin-top:24px;}
+  .hero-badge{
+    background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.25);
+    padding:8px 14px; border-radius:999px; font-size:.82rem; font-weight:600;
+  }
+  .hero-media{position:relative;}
+  .hero-media img{border-radius:16px; box-shadow:var(--sombra);}
+  .hero-price-tag{
+    position:absolute; bottom:-18px; left:-18px; background:#fff; color:var(--verde);
+    padding:14px 20px; border-radius:12px; box-shadow:0 10px 26px rgba(0,0,0,.18);
+    font-weight:800; font-size:1rem;
+  }
+  .hero-price-tag small{display:block; font-weight:600; color:var(--cinza-texto); font-size:.72rem;}
+  .hero-price-tag b{color:var(--vinho); font-size:1.4rem;}
+
+  /* TRUST BAR */
+  .trust{background:var(--creme-2); padding:22px 0; border-bottom:1px solid rgba(0,0,0,.06);}
+  .trust .container{
+    display:flex; flex-wrap:wrap; justify-content:space-between; gap:18px; text-align:center;
+  }
+  .trust-item{flex:1; min-width:140px;}
+  .trust-item b{display:block; color:var(--vinho); font-size:1.35rem;}
+  .trust-item span{font-size:.8rem; color:var(--cinza-texto);}
+
+  /* SECTION BASE */
+  section{padding:60px 0;}
+  .section-title{font-size:1.9rem; color:var(--verde); text-align:center; margin-bottom:12px;}
+  .section-sub{text-align:center; color:var(--cinza-texto); max-width:640px; margin:0 auto 40px;}
+
+  /* PLANOS */
+  .planos-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:24px; max-width:820px; margin:0 auto;}
+  .plano-card{
+    background:#fff; border-radius:14px; padding:28px; box-shadow:var(--sombra);
+    border-top:5px solid var(--verde);
+  }
+  .plano-card.pro{border-top-color:var(--vinho);}
+  .plano-card .tag{
+    display:inline-block; font-size:.72rem; font-weight:800; letter-spacing:.06em;
+    padding:4px 12px; border-radius:999px; margin-bottom:14px;
+    background:rgba(13,59,52,.1); color:var(--verde);
+  }
+  .plano-card.pro .tag{background:rgba(125,37,48,.1); color:var(--vinho);}
+  .plano-card h3{font-size:1.3rem; margin-bottom:14px; color:#1c1c1c;}
+  .plano-card ul{list-style:none;}
+  .plano-card li{padding:6px 0; font-size:.94rem; color:var(--cinza-texto); position:relative; padding-left:26px;}
+  .plano-card li::before{
+    content:"✓"; position:absolute; left:0; color:var(--verde); font-weight:800;
+  }
+  .plano-card.pro li::before{color:var(--vinho);}
+
+  /* POR QUE MEGA */
+  .porque{background:#fff;}
+  .porque-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:22px;}
+  .porque-item{text-align:center; padding:22px 14px;}
+  .porque-icon{
+    width:56px; height:56px; margin:0 auto 14px; border-radius:50%;
+    background:rgba(13,59,52,.08); display:flex; align-items:center; justify-content:center;
+    font-size:1.5rem; color:var(--verde);
+  }
+  .porque-item h4{font-size:1rem; margin-bottom:6px; color:#1c1c1c;}
+  .porque-item p{font-size:.86rem; color:var(--cinza-texto);}
+
+  /* FORM DE QUALIFICAÇÃO */
+  .qualifica{
+    background:var(--verde); color:#fff; position:relative; overflow:hidden;
+  }
+  .qualifica .container{
+    display:grid; grid-template-columns:.9fr 1.1fr; gap:44px; align-items:flex-start;
+  }
+  .qualifica h2{font-size:1.9rem; margin-bottom:16px;}
+  .qualifica p{color:#dcece7; margin-bottom:18px;}
+  .qualifica-list{list-style:none; margin-top:22px;}
+  .qualifica-list li{padding:8px 0; padding-left:28px; position:relative; font-size:.94rem; color:#e6efec;}
+  .qualifica-list li::before{content:"→"; position:absolute; left:0; color:var(--vinho); font-weight:800;}
+
+  .form-card{
+    background:#fff; color:#1c1c1c; border-radius:16px; padding:32px; box-shadow:0 20px 50px rgba(0,0,0,.25);
+  }
+  .form-card h3{color:var(--verde); font-size:1.25rem; margin-bottom:6px;}
+  .form-card .form-sub{color:var(--cinza-texto); font-size:.88rem; margin-bottom:22px;}
+  .progress{display:flex; gap:6px; margin-bottom:24px;}
+  .progress span{flex:1; height:5px; border-radius:999px; background:#e5ded2;}
+  .progress span.active{background:var(--vinho);}
+
+  .step{display:none;}
+  .step.active{display:block; animation:fade .25s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:.86rem; font-weight:700; margin-bottom:7px; color:#333;}
+  .field input[type=text],
+  .field input[type=tel],
+  .field select{
+    width:100%; padding:13px 14px; border:1.5px solid #ddd3c2; border-radius:8px;
+    font-size:.96rem; background:#fbf8f3;
+  }
+  .field input:focus, .field select:focus{outline:2px solid var(--verde); border-color:var(--verde);}
+
+  .option-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .option-card{
+    border:1.5px solid #ddd3c2; border-radius:10px; padding:14px 12px; cursor:pointer;
+    text-align:center; font-weight:600; font-size:.9rem; background:#fbf8f3;
+    transition:border-color .15s, background .15s;
+  }
+  .option-card:hover{border-color:var(--verde);}
+  .option-card.selected{border-color:var(--vinho); background:rgba(125,37,48,.08); color:var(--vinho);}
+  .option-card small{display:block; font-weight:500; color:var(--cinza-texto); margin-top:2px;}
+  .option-card.selected small{color:var(--vinho);}
+
+  .form-nav{display:flex; justify-content:space-between; align-items:center; margin-top:22px; gap:12px;}
+  .btn-voltar{
+    background:none; border:none; color:var(--cinza-texto); font-weight:700; cursor:pointer; font-size:.9rem;
+  }
+  .form-error{color:var(--vinho); font-size:.82rem; margin-top:6px; display:none;}
+  .privacy-note{font-size:.75rem; color:#999; margin-top:14px; text-align:center;}
+
+  /* FAQ */
+  .faq-item{border-bottom:1px solid #e2d8c7; padding:18px 0;}
+  .faq-item summary{cursor:pointer; font-weight:700; color:var(--verde); list-style:none; display:flex; justify-content:space-between;}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{content:"+"; font-size:1.3rem; color:var(--vinho);}
+  .faq-item[open] summary::after{content:"–";}
+  .faq-item p{margin-top:10px; color:var(--cinza-texto); font-size:.92rem;}
+
+  /* FOOTER */
+  footer{background:var(--verde-escuro); color:#cfe0da; padding:34px 0; text-align:center; font-size:.85rem;}
+  footer b{color:#fff;}
+
+  /* WHATSAPP FLOAT */
+  .wa-float{
+    position:fixed; bottom:22px; right:22px; background:#25D366; color:#fff;
+    width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 10px 24px rgba(0,0,0,.25); z-index:60; font-size:1.6rem;
+  }
+
+  @media (max-width: 900px){
+    .hero .container{grid-template-columns:1fr;}
+    .hero-media{order:-1;}
+    .qualifica .container{grid-template-columns:1fr;}
+    .planos-grid{grid-template-columns:1fr;}
+    .porque-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width: 560px){
+    .hero h1{font-size:1.8rem;}
+    header .btn span{display:none;}
+    .trust .container{justify-content:flex-start;}
+    .option-grid{grid-template-columns:1fr;}
+    .porque-grid{grid-template-columns:1fr;}
+    .hero-price-tag{position:static; margin-top:14px; display:inline-block;}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="container">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="5,90 5,10 30,10 50,45 70,10 70,10 55,55 30,55" fill="#9aa0a6"/>
+          <polygon points="70,10 95,10 95,90 78,90 78,55 95,55 95,40 78,40 78,25 95,25 95,10" fill="#7d2530"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <div class="top">MEGA <span style="color:#7d2530;">SEGUROS</span></div>
+        <div class="bottom">SEGURO MAIS ACESSÍVEL PARA TODOS</div>
+      </div>
+    </div>
+    <a class="btn" href="#form-lead">Falar com especialista</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div>
+      <span class="eyebrow">Oferta exclusiva para quem veio do anúncio</span>
+      <h1>Seguro auto de verdade, no preço que <span>cabe no seu bolso</span>.</h1>
+      <p class="lead">
+        Apólice individual no seu nome, indenização em até 30 dias corridos e assistência 24h.
+        Preencha o formulário rápido abaixo e um especialista Mega Seguros te chama no WhatsApp
+        com a cotação certa para o seu perfil.
+      </p>
+      <a href="#form-lead" class="btn">Quero minha cotação agora</a>
+      <div class="hero-cta-note">⚡ Resposta em poucos minutos, sem compromisso.</div>
+      <div class="hero-badges">
+        <span class="hero-badge">🛡️ Seguradora regulada pela SUSEP</span>
+        <span class="hero-badge">📄 Apólice individual no seu nome</span>
+        <span class="hero-badge">🚫 Sem consulta de CEP, SPC ou Serasa</span>
+        <span class="hero-badge">🕐 Assistência 24h própria</span>
+        <span class="hero-badge">🟢⚪⚫ Patrocinadora oficial do Fluminense</span>
+      </div>
+    </div>
+    <div class="hero-media">
+      <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=900&q=80" alt="Família protegida pelo seguro Mega Seguros">
+      <div class="hero-price-tag">
+        <small>Seguro auto a partir de</small>
+        <b>R$ 91,00/mês</b>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust">
+  <div class="container">
+    <div class="trust-item"><b>R$ 1,5M+</b><span>em indenizações pagas</span></div>
+    <div class="trust-item"><b>+25 mil</b><span>clientes segurados</span></div>
+    <div class="trust-item"><b>Até 30 dias</b><span>para pagamento da indenização</span></div>
+    <div class="trust-item"><b>100%</b><span>da tabela FIPE</span></div>
+    <div class="trust-item"><b>24h</b><span>assistência todos os dias</span></div>
+    <div class="trust-item"><b>Fluminense</b><span>patrocinadora oficial do clube</span></div>
+  </div>
+</div>
+
+<!-- PLANOS -->
+<section>
+  <div class="container">
+    <h2 class="section-title">Escolha o plano ideal para a sua rotina</h2>
+    <p class="section-sub">Dois planos pensados para diferentes perfis de condutor — o especialista te ajuda a escolher o certo no WhatsApp.</p>
+    <div class="planos-grid">
+      <div class="plano-card">
+        <span class="tag">ESSENCIAL</span>
+        <h3>Plano Essencial</h3>
+        <ul>
+          <li>Cobertura para roubo e furto</li>
+          <li>Assistência 24h</li>
+          <li>Rastreador gratuito</li>
+          <li>Proteção Kit GNV gratuito</li>
+          <li>Fenômenos da natureza (básico)</li>
+        </ul>
+      </div>
+      <div class="plano-card pro">
+        <span class="tag">PRO</span>
+        <h3>Plano Pro</h3>
+        <ul>
+          <li>Cobertura para roubo e furto</li>
+          <li>Assistência 24h</li>
+          <li>Proteção básica de vidros</li>
+          <li>Proteção de farol</li>
+          <li>Carro reserva</li>
+          <li>Rastreador gratuito</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POR QUE MEGA -->
+<section class="porque">
+  <div class="container">
+    <h2 class="section-title">Por que fechar com a Mega Seguros?</h2>
+    <div class="porque-grid">
+      <div class="porque-item">
+        <div class="porque-icon">📅</div>
+        <h4>Assinatura mensal</h4>
+        <p>Seguro com assinatura mensal e apólice individual no seu nome.</p>
+      </div>
+      <div class="porque-item">
+        <div class="porque-icon">🚫</div>
+        <h4>Sem burocracia</h4>
+        <p>Sem consulta de CEP, SPC e Serasa para contratar.</p>
+      </div>
+      <div class="porque-item">
+        <div class="porque-icon">🛡️</div>
+        <h4>Cobertura completa</h4>
+        <p>Roubo, furto, colisão, incêndio e perda total.</p>
+      </div>
+      <div class="porque-item">
+        <div class="porque-icon">🚗</div>
+        <h4>Assistência 24h própria</h4>
+        <p>Reboque, chaveiro, pane seca e troca de pneu quando você precisar.</p>
+      </div>
+    </div>
+    <p style="text-align:center; margin-top:34px; font-weight:700; color:var(--verde);">
+      🟢⚪⚫ Orgulho de ser patrocinadora oficial do Fluminense Football Club
+    </p>
+  </div>
+</section>
+
+<!-- FORM DE QUALIFICAÇÃO -->
+<section class="qualifica" id="form-lead">
+  <div class="container">
+    <div>
+      <span class="eyebrow" style="background:rgba(255,255,255,.15); color:#fff;">Leva menos de 1 minuto</span>
+      <h2>Responda 4 perguntas rápidas e receba sua cotação personalizada</h2>
+      <p>Assim conseguimos priorizar o seu atendimento e te chamar no WhatsApp com a condição certa para o seu perfil — sem enrolação.</p>
+      <ul class="qualifica-list">
+        <li>Cotação personalizada para o seu veículo</li>
+        <li>Atendimento prioritário para quem já está decidido</li>
+        <li>Sem custo e sem compromisso</li>
+      </ul>
+    </div>
+
+    <div class="form-card">
+      <h3 id="form-title">Vamos começar</h3>
+      <p class="form-sub" id="form-sub">Passo 1 de 4</p>
+      <div class="progress">
+        <span class="active" data-step="1"></span>
+        <span data-step="2"></span>
+        <span data-step="3"></span>
+        <span data-step="4"></span>
+      </div>
+
+      <form id="lead-form" autocomplete="off">
+
+        <!-- STEP 1: já tem seguro / vencimento (urgência) -->
+        <div class="step active" data-step="1">
+          <div class="field">
+            <label>Você já tem um seguro auto hoje?</label>
+            <div class="option-grid" data-group="tem_seguro">
+              <div class="option-card" data-value="Não tenho seguro">Não tenho seguro</div>
+              <div class="option-card" data-value="Tenho, mas está vencendo">Tenho, mas está vencendo</div>
+              <div class="option-card" data-value="Tenho seguro vigente">Tenho seguro vigente</div>
+              <div class="option-card" data-value="Não sei / quero entender">Não sei / quero entender</div>
+            </div>
+            <div class="form-error">Selecione uma opção para continuar.</div>
+          </div>
+        </div>
+
+        <!-- STEP 2: tipo de veículo -->
+        <div class="step" data-step="2">
+          <div class="field">
+            <label>Qual o tipo do seu veículo?</label>
+            <div class="option-grid" data-group="tipo_veiculo">
+              <div class="option-card" data-value="Carro popular">Carro popular</div>
+              <div class="option-card" data-value="Carro médio/SUV">Carro médio / SUV</div>
+              <div class="option-card" data-value="Carro de luxo">Carro de luxo</div>
+              <div class="option-card" data-value="Moto">Moto</div>
+            </div>
+            <div class="form-error">Selecione uma opção para continuar.</div>
+          </div>
+        </div>
+
+        <!-- STEP 3: urgência de decisão -->
+        <div class="step" data-step="3">
+          <div class="field">
+            <label>Para quando você quer fechar o seguro?</label>
+            <div class="option-grid" data-group="urgencia">
+              <div class="option-card" data-value="Hoje/esta semana">Hoje / esta semana</div>
+              <div class="option-card" data-value="Este mês">Este mês</div>
+              <div class="option-card" data-value="Só pesquisando preço">Só pesquisando preço</div>
+              <div class="option-card" data-value="Ainda não sei">Ainda não sei</div>
+            </div>
+            <div class="form-error">Selecione uma opção para continuar.</div>
+          </div>
+        </div>
+
+        <!-- STEP 4: contato -->
+        <div class="step" data-step="4">
+          <div class="field">
+            <label for="nome">Seu nome</label>
+            <input type="text" id="nome" placeholder="Como podemos te chamar?">
+          </div>
+          <div class="field">
+            <label for="whatsapp">Seu WhatsApp (com DDD)</label>
+            <input type="tel" id="whatsapp" placeholder="(21) 90000-0000">
+          </div>
+          <div class="field">
+            <label for="cidade">Cidade / região</label>
+            <input type="text" id="cidade" placeholder="Ex: Rio de Janeiro - RJ">
+          </div>
+          <div class="form-error" id="contato-error">Preencha nome e WhatsApp para receber sua cotação.</div>
+        </div>
+
+        <div class="form-nav">
+          <button type="button" class="btn-voltar" id="btn-voltar" style="visibility:hidden;">← Voltar</button>
+          <button type="button" class="btn" id="btn-avancar">Continuar →</button>
+        </div>
+      </form>
+      <p class="privacy-note">Seus dados são usados apenas para contato sobre sua cotação. Sem spam.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="container" style="max-width:760px;">
+    <h2 class="section-title">Perguntas frequentes</h2>
+    <details class="faq-item" open>
+      <summary>O seguro é regulado mesmo?</summary>
+      <p>Sim. A Mega Seguros opera com seguradora autorizada pela SUSEP, com apólice individual no seu nome e garantia prevista em lei.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Quanto tempo leva para receber a indenização?</summary>
+      <p>O prazo é de até 30 dias corridos após a aprovação do sinistro, com pagamento de 100% da tabela FIPE.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Preciso pagar algo para receber a cotação?</summary>
+      <p>Não. Preencher o formulário e falar com nosso especialista no WhatsApp é totalmente gratuito e sem compromisso.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Meu veículo é mais antigo, ainda consigo contratar?</summary>
+      <p>Sim, temos planos para diferentes perfis de veículo. Nosso especialista confirma a melhor opção para o seu caso.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Meu nome está no SPC/Serasa, consigo contratar?</summary>
+      <p>Sim. A contratação não passa por consulta de CEP, SPC ou Serasa — o processo é simples e rápido.</p>
+    </details>
+    <details class="faq-item">
+      <summary>A Mega Seguros é a patrocinadora do Fluminense?</summary>
+      <p>Sim! A Mega Seguros é patrocinadora oficial do Fluminense Football Club, reforçando o compromisso com credibilidade e proximidade com o torcedor.</p>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p><b>Mega Seguros</b> — Seguro mais acessível para todos.</p>
+    <p>Atendimento via WhatsApp: +55 21 96613-3860</p>
+  </div>
+</footer>
+
+<a class="wa-float" id="wa-float" href="https://wa.me/5521966133860?text=Ol%C3%A1!%20Vim%20pelo%20an%C3%BAncio%20e%20quero%20fazer%20uma%20cota%C3%A7%C3%A3o%20de%20seguro%20auto." target="_blank" rel="noopener" aria-label="Falar no WhatsApp">💬</a>
+
+<script>
+(function(){
+  var WHATSAPP_NUMBER = "5521966133860";
+
+  // captura utms da URL para levar junto no lead
+  var params = new URLSearchParams(window.location.search);
+  var utm = {
+    utm_source: params.get('utm_source') || '',
+    utm_campaign: params.get('utm_campaign') || '',
+    utm_medium: params.get('utm_medium') || '',
+    fbclid: params.get('fbclid') || ''
+  };
+
+  var answers = { tem_seguro:'', tipo_veiculo:'', urgencia:'', nome:'', whatsapp:'', cidade:'' };
+  var currentStep = 1;
+  var totalSteps = 4;
+
+  var stepTitles = {
+    1: ["Vamos começar", "Passo 1 de 4"],
+    2: ["Sobre o seu veículo", "Passo 2 de 4"],
+    3: ["Quase lá", "Passo 3 de 4"],
+    4: ["Onde te encontramos?", "Passo 4 de 4"]
+  };
+
+  var form = document.getElementById('lead-form');
+  var btnAvancar = document.getElementById('btn-avancar');
+  var btnVoltar = document.getElementById('btn-voltar');
+  var formTitle = document.getElementById('form-title');
+  var formSub = document.getElementById('form-sub');
+
+  document.querySelectorAll('.option-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      var group = card.parentElement.getAttribute('data-group');
+      var siblings = card.parentElement.querySelectorAll('.option-card');
+      siblings.forEach(function(s){ s.classList.remove('selected'); });
+      card.classList.add('selected');
+      answers[group] = card.getAttribute('data-value');
+      hideError(card.closest('.step'));
+    });
+  });
+
+  function hideError(stepEl){
+    var err = stepEl.querySelector('.form-error');
+    if(err) err.style.display = 'none';
+  }
+  function showError(stepEl){
+    var err = stepEl.querySelector('.form-error');
+    if(err) err.style.display = 'block';
+  }
+
+  function goToStep(step){
+    document.querySelectorAll('.step').forEach(function(s){
+      s.classList.toggle('active', s.getAttribute('data-step') == step);
+    });
+    document.querySelectorAll('.progress span').forEach(function(p){
+      p.classList.toggle('active', parseInt(p.getAttribute('data-step')) <= step);
+    });
+    formTitle.textContent = stepTitles[step][0];
+    formSub.textContent = stepTitles[step][1];
+    btnVoltar.style.visibility = step === 1 ? 'hidden' : 'visible';
+    btnAvancar.textContent = step === totalSteps ? 'Receber minha cotação no WhatsApp' : 'Continuar →';
+    currentStep = step;
+  }
+
+  function validateStep(step){
+    if(step === 1) return !!answers.tem_seguro;
+    if(step === 2) return !!answers.tipo_veiculo;
+    if(step === 3) return !!answers.urgencia;
+    if(step === 4){
+      answers.nome = document.getElementById('nome').value.trim();
+      answers.whatsapp = document.getElementById('whatsapp').value.trim();
+      answers.cidade = document.getElementById('cidade').value.trim();
+      return answers.nome.length > 1 && answers.whatsapp.length >= 8;
+    }
+    return true;
+  }
+
+  function scoreLead(){
+    var score = 0;
+    if(answers.tem_seguro === 'Tenho, mas está vencendo') score += 3;
+    if(answers.tem_seguro === 'Não tenho seguro') score += 2;
+    if(answers.urgencia === 'Hoje/esta semana') score += 3;
+    if(answers.urgencia === 'Este mês') score += 2;
+    if(answers.urgencia === 'Só pesquisando preço') score += 0;
+    if(score >= 5) return 'ALTA';
+    if(score >= 2) return 'MÉDIA';
+    return 'BAIXA';
+  }
+
+  btnAvancar.addEventListener('click', function(){
+    var stepEl = document.querySelector('.step[data-step="' + currentStep + '"]');
+    if(!validateStep(currentStep)){
+      showError(stepEl);
+      return;
+    }
+    if(currentStep < totalSteps){
+      goToStep(currentStep + 1);
+    } else {
+      submitLead();
+    }
+  });
+
+  btnVoltar.addEventListener('click', function(){
+    if(currentStep > 1) goToStep(currentStep - 1);
+  });
+
+  function submitLead(){
+    var prioridade = scoreLead();
+
+    // Dispara evento de conversão para o Meta Pixel, se estiver instalado
+    if(typeof fbq === 'function'){
+      fbq('track', 'Lead', {
+        content_name: 'LP Seguro Auto',
+        prioridade: prioridade
+      });
+    }
+
+    var msg = "Olá! Vim pelo anúncio da Mega Seguros e quero uma cotação de seguro auto.\n" +
+      "----------------------------\n" +
+      "Prioridade do lead: " + prioridade + "\n" +
+      "Nome: " + answers.nome + "\n" +
+      "Cidade: " + (answers.cidade || "não informado") + "\n" +
+      "Já tem seguro? " + answers.tem_seguro + "\n" +
+      "Tipo de veículo: " + answers.tipo_veiculo + "\n" +
+      "Quando quer fechar: " + answers.urgencia + "\n";
+
+    if(utm.utm_source || utm.utm_campaign){
+      msg += "----------------------------\n" +
+        "Origem: " + (utm.utm_source || "-") + " / Campanha: " + (utm.utm_campaign || "-");
+    }
+
+    var url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(msg);
+    window.location.href = url;
+  }
+})();
+</script>
+
+</body>
+</html>
