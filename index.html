@@ -165,10 +165,33 @@ fbq('track', 'PageView');
     background:#fff; color:#1c1c1c; border-radius:16px; padding:32px; box-shadow:0 20px 50px rgba(0,0,0,.25);
   }
   .form-card h3{color:var(--verde); font-size:1.25rem; margin-bottom:6px;}
-  .form-card .form-sub{color:var(--cinza-texto); font-size:.88rem; margin-bottom:22px;}
+  .form-card .form-sub{color:var(--cinza-texto); font-size:.88rem; margin-bottom:0;}
+  .form-card-head{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:14px;}
+  .points-badge{
+    background:linear-gradient(135deg, var(--vinho), var(--vinho-escuro)); color:#fff;
+    font-weight:800; font-size:.85rem; padding:8px 14px; border-radius:999px; white-space:nowrap;
+    box-shadow:0 6px 14px rgba(125,37,48,.3); transition:transform .2s;
+  }
+  .points-badge.bump{transform:scale(1.12);}
   .progress{display:flex; gap:6px; margin-bottom:24px;}
   .progress span{flex:1; height:5px; border-radius:999px; background:#e5ded2;}
   .progress span.active{background:var(--vinho);}
+  .mini-feedback{
+    display:none; margin-top:12px; font-size:.86rem; font-weight:700; color:var(--verde);
+    background:rgba(13,59,52,.08); padding:10px 12px; border-radius:8px; animation:fade .25s ease;
+  }
+  .resultado-card{
+    text-align:center; background:linear-gradient(160deg, rgba(13,59,52,.06), rgba(125,37,48,.06));
+    border-radius:14px; padding:26px 18px; margin-bottom:20px;
+  }
+  .resultado-emoji{font-size:2.6rem; margin-bottom:8px;}
+  .resultado-titulo{font-size:1.15rem; font-weight:800; color:var(--verde); margin-bottom:8px;}
+  .resultado-texto{font-size:.9rem; color:var(--cinza-texto);}
+  .confirm-check{
+    display:flex; align-items:flex-start; gap:10px; background:#fbf8f3; border:1.5px solid #ddd3c2;
+    border-radius:10px; padding:14px; cursor:pointer; font-size:.9rem; font-weight:600; color:#333;
+  }
+  .confirm-check input{width:18px; height:18px; margin-top:2px; accent-color:var(--vinho); flex-shrink:0;}
 
   .step{display:none;}
   .step.active{display:block; animation:fade .25s ease;}
@@ -415,7 +438,7 @@ fbq('track', 'PageView');
   <div class="container">
     <div>
       <span class="eyebrow" style="background:rgba(255,255,255,.15); color:#fff;">Leva menos de 1 minuto</span>
-      <h2>Responda 4 perguntas rápidas e receba sua cotação personalizada</h2>
+      <h2>Jogue o quiz rápido, ganhe pontos e receba sua cotação personalizada</h2>
       <p>Assim conseguimos priorizar o seu atendimento e te chamar no WhatsApp com a condição certa para o seu perfil — sem enrolação.</p>
       <ul class="qualifica-list">
         <li>Cotação personalizada para o seu veículo</li>
@@ -425,13 +448,21 @@ fbq('track', 'PageView');
     </div>
 
     <div class="form-card">
-      <h3 id="form-title">Vamos começar</h3>
-      <p class="form-sub" id="form-sub">Passo 1 de 4</p>
+      <div class="form-card-head">
+        <div>
+          <h3 id="form-title">Vamos começar</h3>
+          <p class="form-sub" id="form-sub">Passo 1 de 5</p>
+        </div>
+        <div class="points-badge" id="points-badge">
+          <span id="points-value">0</span> pts
+        </div>
+      </div>
       <div class="progress">
         <span class="active" data-step="1"></span>
         <span data-step="2"></span>
         <span data-step="3"></span>
         <span data-step="4"></span>
+        <span data-step="5"></span>
       </div>
 
       <form id="lead-form" autocomplete="off">
@@ -447,6 +478,7 @@ fbq('track', 'PageView');
               <div class="option-card" data-value="Não sei / quero entender">Não sei / quero entender</div>
             </div>
             <div class="form-error">Selecione uma opção para continuar.</div>
+            <div class="mini-feedback" data-feedback-for="tem_seguro"></div>
           </div>
         </div>
 
@@ -462,9 +494,10 @@ fbq('track', 'PageView');
             </div>
             <div class="form-error">Selecione uma opção para continuar.</div>
             <div class="moto-alert" id="moto-alert">
-              ⚠️ No momento a Mega Seguros ainda não atende motos — cobrimos apenas carros.
-              Assim que abrirmos essa modalidade na sua região, avisamos você.
+              ⚠️ <b>Importante:</b> no momento a Mega Seguros ainda não atende motos — cobrimos apenas carros de passeio.
+              Se quiser, deixe seu contato que avisamos assim que abrirmos essa modalidade na sua região.
             </div>
+            <div class="mini-feedback" data-feedback-for="tipo_veiculo"></div>
           </div>
         </div>
 
@@ -479,6 +512,7 @@ fbq('track', 'PageView');
               <div class="option-card" data-value="Ainda não sei">Ainda não sei</div>
             </div>
             <div class="form-error">Selecione uma opção para continuar.</div>
+            <div class="mini-feedback" data-feedback-for="urgencia"></div>
           </div>
         </div>
 
@@ -497,6 +531,22 @@ fbq('track', 'PageView');
             <input type="text" id="cidade" placeholder="Ex: Rio de Janeiro - RJ">
           </div>
           <div class="form-error" id="contato-error">Preencha nome e WhatsApp para receber sua cotação.</div>
+        </div>
+
+        <!-- STEP 5: confirmação de lead qualificado -->
+        <div class="step" data-step="5">
+          <div class="resultado-card" id="resultado-card">
+            <div class="resultado-emoji" id="resultado-emoji">🔥</div>
+            <div class="resultado-titulo" id="resultado-titulo">Você é um lead prioritário!</div>
+            <p class="resultado-texto" id="resultado-texto">
+              Com base nas suas respostas, você tem prioridade no atendimento com nosso especialista.
+            </p>
+          </div>
+          <label class="confirm-check">
+            <input type="checkbox" id="confirma-interesse">
+            <span>Sim, quero falar agora com um especialista sobre a cotação do meu seguro auto.</span>
+          </label>
+          <div class="form-error" id="confirma-error">Marque a caixa acima para confirmar seu interesse e receber sua cotação.</div>
         </div>
 
         <div class="form-nav">
@@ -588,13 +638,46 @@ fbq('track', 'PageView');
 
   var answers = { tem_seguro:'', tipo_veiculo:'', urgencia:'', nome:'', whatsapp:'', cidade:'' };
   var currentStep = 1;
-  var totalSteps = 4;
+  var totalSteps = 5;
+  var isMotoFlow = false;
+  var totalPoints = 0;
 
   var stepTitles = {
-    1: ["Vamos começar", "Passo 1 de 4"],
-    2: ["Sobre o seu veículo", "Passo 2 de 4"],
-    3: ["Quase lá", "Passo 3 de 4"],
-    4: ["Onde te encontramos?", "Passo 4 de 4"]
+    1: ["Vamos começar", "Passo 1 de 5"],
+    2: ["Sobre o seu veículo", "Passo 2 de 5"],
+    3: ["Quase lá", "Passo 3 de 5"],
+    4: ["Onde te encontramos?", "Passo 4 de 5"],
+    5: ["Seu resultado", "Passo 5 de 5"]
+  };
+
+  var PONTOS = {
+    tem_seguro: {
+      'Não tenho seguro': 25,
+      'Tenho, mas está vencendo': 30,
+      'Tenho seguro vigente': 10,
+      'Não sei / quero entender': 15
+    },
+    tipo_veiculo: {
+      'Carro popular': 20, 'Carro médio/SUV': 20, 'Carro de luxo': 20, 'Moto': 0
+    },
+    urgencia: {
+      'Hoje/esta semana': 30, 'Este mês': 20, 'Só pesquisando preço': 5, 'Ainda não sei': 10
+    }
+  };
+
+  var FEEDBACK = {
+    tem_seguro: {
+      'Não tenho seguro': '🎯 Perfeito, vamos te mostrar como sair da estrada desprotegido.',
+      'Tenho, mas está vencendo': '🔥 Boa! Você está no timing certo para trocar sem ficar um dia sem cobertura.',
+      'Tenho seguro vigente': '👍 Anotado. Podemos comparar e ver se vale a pena migrar.',
+      'Não sei / quero entender': '💬 Sem problema, nosso especialista te explica tudo direitinho.'
+    },
+    urgencia: {
+      'Hoje/esta semana': '⚡ Ótimo, você será atendido com prioridade máxima!',
+      'Este mês': '📅 Combinado, já deixamos você na fila de atendimento prioritário.',
+      'Só pesquisando preço': '🧐 Sem pressa! Você recebe a cotação e decide com calma.',
+      'Ainda não sei': '🙂 Sem problema, vamos te ajudar a decidir.'
+    }
   };
 
   var form = document.getElementById('lead-form');
@@ -602,20 +685,52 @@ fbq('track', 'PageView');
   var btnVoltar = document.getElementById('btn-voltar');
   var formTitle = document.getElementById('form-title');
   var formSub = document.getElementById('form-sub');
-
+  var pointsValue = document.getElementById('points-value');
+  var pointsBadge = document.getElementById('points-badge');
   var motoAlert = document.getElementById('moto-alert');
+  var confirmaInteresse = document.getElementById('confirma-interesse');
+
+  confirmaInteresse.addEventListener('change', function(){
+    if(confirmaInteresse.checked) hideError(document.querySelector('.step[data-step="5"]'));
+  });
+
+  function addPoints(delta){
+    totalPoints = Math.max(0, totalPoints + delta);
+    pointsValue.textContent = totalPoints;
+    pointsBadge.classList.remove('bump');
+    void pointsBadge.offsetWidth;
+    pointsBadge.classList.add('bump');
+  }
 
   document.querySelectorAll('.option-card').forEach(function(card){
     card.addEventListener('click', function(){
       var group = card.parentElement.getAttribute('data-group');
+      var value = card.getAttribute('data-value');
       var siblings = card.parentElement.querySelectorAll('.option-card');
+      var anteriorPontos = PONTOS[group] && answers[group] ? (PONTOS[group][answers[group]] || 0) : 0;
+
       siblings.forEach(function(s){ s.classList.remove('selected'); });
       card.classList.add('selected');
-      answers[group] = card.getAttribute('data-value');
+      answers[group] = value;
       hideError(card.closest('.step'));
 
+      var novoPontos = (PONTOS[group] && PONTOS[group][value]) || 0;
+      addPoints(novoPontos - anteriorPontos);
+
+      var feedbackEl = card.closest('.field').querySelector('.mini-feedback');
+      if(feedbackEl){
+        var texto = FEEDBACK[group] && FEEDBACK[group][value];
+        if(texto){
+          feedbackEl.textContent = texto;
+          feedbackEl.style.display = 'block';
+        } else {
+          feedbackEl.style.display = 'none';
+        }
+      }
+
       if(group === 'tipo_veiculo'){
-        var isMoto = card.getAttribute('data-value') === 'Moto';
+        var isMoto = value === 'Moto';
+        isMotoFlow = isMoto;
         motoAlert.style.display = isMoto ? 'block' : 'none';
         btnAvancar.textContent = isMoto ? 'Quero ser avisado quando abrir' : 'Continuar →';
       }
@@ -631,6 +746,27 @@ fbq('track', 'PageView');
     if(err) err.style.display = 'block';
   }
 
+  function atualizarResultado(){
+    var prioridade = scoreLead();
+    var emoji = document.getElementById('resultado-emoji');
+    var titulo = document.getElementById('resultado-titulo');
+    var texto = document.getElementById('resultado-texto');
+
+    if(prioridade === 'ALTA'){
+      emoji.textContent = '🔥';
+      titulo.textContent = 'Você é um Lead Prioritário! (' + totalPoints + ' pts)';
+      texto.textContent = 'Com base nas suas respostas, seu atendimento entra na frente da fila com nosso especialista.';
+    } else if(prioridade === 'MÉDIA'){
+      emoji.textContent = '⭐';
+      titulo.textContent = 'Você tem um bom perfil! (' + totalPoints + ' pts)';
+      texto.textContent = 'Vamos te enviar uma cotação personalizada assim que confirmar seu interesse abaixo.';
+    } else {
+      emoji.textContent = '👍';
+      titulo.textContent = 'Cotação liberada! (' + totalPoints + ' pts)';
+      texto.textContent = 'Confirme abaixo e um especialista te explica as condições sem compromisso.';
+    }
+  }
+
   function goToStep(step){
     document.querySelectorAll('.step').forEach(function(s){
       s.classList.toggle('active', s.getAttribute('data-step') == step);
@@ -641,26 +777,26 @@ fbq('track', 'PageView');
     formTitle.textContent = stepTitles[step][0];
     formSub.textContent = stepTitles[step][1];
     btnVoltar.style.visibility = step === 1 ? 'hidden' : 'visible';
-
-    if(step === totalSteps){
-      btnAvancar.textContent = answers.tipo_veiculo === 'Moto'
-        ? 'Quero ser avisado quando abrir'
-        : 'Receber minha cotação no WhatsApp';
-    } else if(step === 2 && answers.tipo_veiculo === 'Moto'){
-      btnAvancar.textContent = 'Quero ser avisado quando abrir';
-    } else {
-      btnAvancar.textContent = 'Continuar →';
-    }
+    btnAvancar.textContent = 'Continuar →';
 
     if(step === 2){
       motoAlert.style.display = answers.tipo_veiculo === 'Moto' ? 'block' : 'none';
+      if(answers.tipo_veiculo === 'Moto') btnAvancar.textContent = 'Quero ser avisado quando abrir';
     }
 
     if(step === 4){
-      formTitle.textContent = answers.tipo_veiculo === 'Moto' ? 'Deixe seu contato' : stepTitles[4][0];
-      formSub.textContent = answers.tipo_veiculo === 'Moto'
-        ? 'Avisamos você assim que o seguro moto estiver disponível.'
-        : stepTitles[4][1];
+      if(isMotoFlow){
+        formTitle.textContent = 'Deixe seu contato';
+        formSub.textContent = 'Avisamos você assim que o seguro moto estiver disponível.';
+        btnAvancar.textContent = 'Quero ser avisado quando abrir';
+      } else {
+        btnAvancar.textContent = 'Ver meu resultado →';
+      }
+    }
+
+    if(step === 5){
+      atualizarResultado();
+      btnAvancar.textContent = 'Receber minha cotação no WhatsApp';
     }
 
     currentStep = step;
@@ -675,6 +811,9 @@ fbq('track', 'PageView');
       answers.whatsapp = document.getElementById('whatsapp').value.trim();
       answers.cidade = document.getElementById('cidade').value.trim();
       return answers.nome.length > 1 && answers.whatsapp.length >= 8;
+    }
+    if(step === 5){
+      return confirmaInteresse.checked;
     }
     return true;
   }
@@ -709,36 +848,59 @@ fbq('track', 'PageView');
       showError(stepEl);
       return;
     }
+
     // moto: pula a pergunta de urgência (não vendemos seguro moto) e vai direto pro contato
     if(currentStep === 2 && answers.tipo_veiculo === 'Moto'){
+      isMotoFlow = true;
       answers.urgencia = 'Não se aplica (moto)';
       goToStep(4);
       return;
     }
-    if(currentStep < totalSteps){
-      goToStep(currentStep + 1);
-    } else {
-      submitLead();
+
+    if(currentStep === 3){
+      goToStep(4);
+      return;
     }
+
+    if(currentStep === 4){
+      if(isMotoFlow){
+        submitLead();
+      } else {
+        goToStep(5);
+      }
+      return;
+    }
+
+    if(currentStep === 5){
+      submitLead();
+      return;
+    }
+
+    goToStep(currentStep + 1);
   });
 
   btnVoltar.addEventListener('click', function(){
-    if(currentStep === 4 && answers.tipo_veiculo === 'Moto'){
+    if(currentStep === 4 && isMotoFlow){
       goToStep(2);
+      return;
+    }
+    if(currentStep === 5){
+      goToStep(4);
       return;
     }
     if(currentStep > 1) goToStep(currentStep - 1);
   });
 
   function submitLead(){
-    var isMoto = answers.tipo_veiculo === 'Moto';
+    var isMoto = isMotoFlow;
     var prioridade = isMoto ? 'FORA DO ESCOPO (MOTO)' : scoreLead();
 
     // Dispara evento de conversão para o Meta Pixel, se estiver instalado
     if(typeof fbq === 'function'){
       fbq('track', 'Lead', {
         content_name: isMoto ? 'LP Seguro Auto - Lista de espera Moto' : 'LP Seguro Auto',
-        prioridade: prioridade
+        prioridade: prioridade,
+        pontos: totalPoints
       });
     }
 
@@ -747,9 +909,10 @@ fbq('track', 'PageView');
          "----------------------------\n" +
          "Nome: " + answers.nome + "\n" +
          "Cidade: " + (answers.cidade || "não informado") + "\n")
-      : ("Olá! Vim pelo anúncio da Mega Seguros e quero uma cotação de seguro auto.\n" +
+      : ("Olá! Vim pelo anúncio da Mega Seguros e quero falar sobre a cotação do meu seguro auto agora.\n" +
       "----------------------------\n" +
-      "Prioridade do lead: " + prioridade + "\n" +
+      "Prioridade do lead: " + prioridade + " (" + totalPoints + " pts)\n" +
+      "Confirmou interesse em falar agora: Sim\n" +
       "Nome: " + answers.nome + "\n" +
       "Cidade: " + (answers.cidade || "não informado") + "\n" +
       "Já tem seguro? " + answers.tem_seguro + "\n" +
