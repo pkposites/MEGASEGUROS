@@ -516,14 +516,10 @@ fbq('track', 'PageView');
             <input type="text" id="nome" placeholder="Como podemos te chamar?">
           </div>
           <div class="field">
-            <label for="whatsapp">Seu WhatsApp (com DDD)</label>
-            <input type="tel" id="whatsapp" placeholder="(21) 90000-0000">
-          </div>
-          <div class="field">
             <label for="cidade">Cidade / região</label>
             <input type="text" id="cidade" placeholder="Ex: Rio de Janeiro - RJ">
           </div>
-          <div class="form-error" id="contato-error">Preencha nome e WhatsApp para receber sua cotação.</div>
+          <div class="form-error" id="contato-error">Preencha seu nome para continuar.</div>
         </div>
 
         <!-- STEP 5: confirmação de lead qualificado -->
@@ -627,7 +623,7 @@ fbq('track', 'PageView');
     }catch(e){}
   }
 
-  var answers = { tem_seguro:'', tipo_veiculo:'', urgencia:'', nome:'', whatsapp:'', cidade:'' };
+  var answers = { tem_seguro:'', tipo_veiculo:'', urgencia:'', nome:'', cidade:'' };
   var currentStep = 1;
   var totalSteps = 5;
   var isMotoFlow = false;
@@ -637,7 +633,7 @@ fbq('track', 'PageView');
     1: ["Vamos começar", "Passo 1 de 5"],
     2: ["Sobre o seu veículo", "Passo 2 de 5"],
     3: ["Quase lá", "Passo 3 de 5"],
-    4: ["Onde te encontramos?", "Passo 4 de 5"],
+    4: ["Só falta seu nome", "Passo 4 de 5"],
     5: ["Seu resultado", "Passo 5 de 5"]
   };
 
@@ -799,9 +795,8 @@ fbq('track', 'PageView');
     if(step === 3) return !!answers.urgencia;
     if(step === 4){
       answers.nome = document.getElementById('nome').value.trim();
-      answers.whatsapp = document.getElementById('whatsapp').value.trim();
       answers.cidade = document.getElementById('cidade').value.trim();
-      return answers.nome.length > 1 && answers.whatsapp.length >= 8;
+      return answers.nome.length > 1;
     }
     if(step === 5){
       return confirmaInteresse.checked;
