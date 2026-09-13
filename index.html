@@ -917,25 +917,46 @@ fbq('track', 'PageView');
       }
     }
 
-    var msg = isMoto
-      ? ("Olá! Vim pelo anúncio da Mega Seguros. Tenho uma moto e gostaria de ser avisado(a) quando vocês abrirem seguro para motos.\n" +
-         "----------------------------\n" +
-         "Nome: " + answers.nome + "\n" +
-         "Cidade: " + (answers.cidade || "não informado") + "\n")
-      : ("Olá! Vim pelo anúncio da Mega Seguros e quero falar sobre a cotação do meu seguro auto agora.\n" +
-      "----------------------------\n" +
-      "Prioridade do lead: " + prioridade + " (" + totalPoints + " pts)\n" +
-      "Confirmou interesse em falar agora: Sim\n" +
-      "Nome: " + answers.nome + "\n" +
-      "Cidade: " + (answers.cidade || "não informado") + "\n" +
-      "Já tem seguro? " + answers.tem_seguro + "\n" +
-      "Tipo de veículo: " + answers.tipo_veiculo + "\n" +
-      "Quando quer fechar: " + answers.urgencia + "\n");
+    var primeiroNome = (answers.nome || '').trim().split(' ')[0];
+    var cidadeTexto = answers.cidade ? (' Sou de ' + answers.cidade + '.') : '';
 
-    var origem = montaTextoOrigem(utm);
-    if(origem){
-      msg += "----------------------------\n" + origem;
+    var msg;
+    if(isMoto){
+      msg = "Oi, boa tarde! Me chamo " + (primeiroNome || answers.nome) + " e vim pelo anúncio da Mega Seguros." +
+        cidadeTexto + " Tenho uma moto e gostaria de ser avisado(a) assim que vocês passarem a oferecer seguro para motos, pode ser?";
+    } else {
+      var fraseSeguro = {
+        'Não tenho seguro': 'Ainda não tenho seguro para o meu carro',
+        'Tenho, mas está vencendo': 'Meu seguro atual está vencendo',
+        'Tenho seguro vigente': 'Já tenho seguro vigente, mas quero comparar',
+        'Não sei / quero entender': 'Não sei bem como funciona e queria entender melhor'
+      }[answers.tem_seguro] || '';
+
+      var fraseVeiculo = {
+        'Carro popular': 'um carro popular',
+        'Carro médio/SUV': 'um carro médio/SUV',
+        'Carro de luxo': 'um carro de luxo'
+      }[answers.tipo_veiculo] || answers.tipo_veiculo;
+
+      var fraseUrgencia = {
+        'Hoje/esta semana': 'e quero fechar ainda hoje ou esta semana',
+        'Este mês': 'e pretendo fechar ainda este mês',
+        'Só pesquisando preço': 'mas por enquanto só estou pesquisando preço',
+        'Ainda não sei': 'mas ainda não decidi quando vou fechar'
+      }[answers.urgencia] || '';
+
+      msg = "Oi, boa tarde! Me chamo " + (primeiroNome || answers.nome) + " e vim pelo anúncio da Mega Seguros." +
+        cidadeTexto + " Quero fazer a cotação do meu seguro auto agora.\n\n" +
+        fraseSeguro + ". Meu veículo é " + fraseVeiculo + ", " + fraseUrgencia + ".";
     }
+
+    // Nota interna para o atendimento: prioridade, pontuação e origem do anúncio.
+    // Fica separada da mensagem "do lead" para manter o tom de primeiro contato acima.
+    var notaInterna = "\n\n— nota interna —\n" +
+      (isMoto ? "Fora do escopo (moto, lista de espera)" : ("Prioridade: " + prioridade + " (" + totalPoints + " pts)")) + "\n" +
+      montaTextoOrigem(utm);
+
+    msg += notaInterna;
 
     var url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(msg);
     window.location.href = url;
