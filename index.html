@@ -507,14 +507,33 @@ fbq('track', 'PageView');
 (function(){
   var WHATSAPP_NUMBER = "5521966133860";
 
-  // captura utms da URL para levar junto no lead
+  // captura os dados do anúncio que gerou a visita (UTMs + parâmetros dinâmicos do Meta/Google Ads)
+  // guarda em sessionStorage para não perder a origem caso o usuário navegue e volte no formulário
+  var UTM_KEY = 'mega_lead_origem';
   var params = new URLSearchParams(window.location.search);
-  var utm = {
-    utm_source: params.get('utm_source') || '',
-    utm_campaign: params.get('utm_campaign') || '',
-    utm_medium: params.get('utm_medium') || '',
-    fbclid: params.get('fbclid') || ''
-  };
+
+  var camposOrigem = [
+    'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
+    'campaign_name', 'campaign_id', 'adset_name', 'adset_id', 'ad_name', 'ad_id',
+    'fbclid', 'gclid'
+  ];
+
+  var utm = {};
+  var temParamNovo = false;
+  camposOrigem.forEach(function(campo){
+    var valor = params.get(campo);
+    if(valor){ temParamNovo = true; }
+    utm[campo] = valor || '';
+  });
+
+  if(temParamNovo){
+    try{ sessionStorage.setItem(UTM_KEY, JSON.stringify(utm)); }catch(e){}
+  } else {
+    try{
+      var salvo = JSON.parse(sessionStorage.getItem(UTM_KEY) || '{}');
+      utm = Object.assign(utm, salvo);
+    }catch(e){}
+  }
 
   var answers = { tem_seguro:'', tipo_veiculo:'', urgencia:'', nome:'', whatsapp:'', cidade:'' };
   var currentStep = 1;
@@ -609,6 +628,18 @@ fbq('track', 'PageView');
     return true;
   }
 
+  function montaTextoOrigem(utm){
+    var linhas = [];
+    if(utm.utm_source || utm.utm_medium) linhas.push("Canal: " + [utm.utm_source, utm.utm_medium].filter(Boolean).join(' / '));
+    if(utm.campaign_name || utm.utm_campaign) linhas.push("Campanha: " + (utm.campaign_name || utm.utm_campaign));
+    if(utm.adset_name) linhas.push("Conjunto de anúncios: " + utm.adset_name);
+    if(utm.ad_name || utm.utm_content) linhas.push("Anúncio: " + (utm.ad_name || utm.utm_content));
+    if(utm.utm_term) linhas.push("Termo/Público: " + utm.utm_term);
+    if(utm.fbclid) linhas.push("Origem: Meta Ads (Facebook/Instagram)");
+    if(utm.gclid) linhas.push("Origem: Google Ads");
+    return linhas.length ? ("Origem do lead:\n" + linhas.join("\n")) : "";
+  }
+
   function scoreLead(){
     var score = 0;
     if(answers.tem_seguro === 'Tenho, mas está vencendo') score += 3;
@@ -674,9 +705,9 @@ fbq('track', 'PageView');
       "Tipo de veículo: " + answers.tipo_veiculo + "\n" +
       "Quando quer fechar: " + answers.urgencia + "\n");
 
-    if(utm.utm_source || utm.utm_campaign){
-      msg += "----------------------------\n" +
-        "Origem: " + (utm.utm_source || "-") + " / Campanha: " + (utm.utm_campaign || "-");
+    var origem = montaTextoOrigem(utm);
+    if(origem){
+      msg += "----------------------------\n" + origem;
     }
 
     var url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(msg);
