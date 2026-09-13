@@ -241,13 +241,6 @@ fbq('track', 'PageView');
   footer{background:var(--verde-escuro); color:#cfe0da; padding:34px 0; text-align:center; font-size:.85rem;}
   footer b{color:#fff;}
 
-  /* WHATSAPP FLOAT */
-  .wa-float{
-    position:fixed; bottom:22px; right:22px; background:#25D366; color:#fff;
-    width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-    box-shadow:0 10px 24px rgba(0,0,0,.25); z-index:60; font-size:1.6rem;
-  }
-
   @media (max-width: 900px){
     .hero .container{grid-template-columns:1fr;}
     .hero-media{order:-1;}
@@ -602,8 +595,6 @@ fbq('track', 'PageView');
   </div>
 </footer>
 
-<a class="wa-float" id="wa-float" href="https://wa.me/5521966133860?text=Ol%C3%A1!%20Vim%20pelo%20an%C3%BAncio%20e%20quero%20fazer%20uma%20cota%C3%A7%C3%A3o%20de%20seguro%20auto." target="_blank" rel="noopener" aria-label="Falar no WhatsApp">💬</a>
-
 <script>
 (function(){
   var WHATSAPP_NUMBER = "5521966133860";
@@ -895,13 +886,21 @@ fbq('track', 'PageView');
     var isMoto = isMotoFlow;
     var prioridade = isMoto ? 'FORA DO ESCOPO (MOTO)' : scoreLead();
 
-    // Dispara evento de conversão para o Meta Pixel, se estiver instalado
+    // O evento padrão "Lead" (qualificado) só dispara quando o usuário marcou a
+    // caixa de confirmação de interesse. O fluxo de moto (lista de espera) nunca
+    // passa por essa caixa, então usa um evento customizado à parte.
     if(typeof fbq === 'function'){
-      fbq('track', 'Lead', {
-        content_name: isMoto ? 'LP Seguro Auto - Lista de espera Moto' : 'LP Seguro Auto',
-        prioridade: prioridade,
-        pontos: totalPoints
-      });
+      if(!isMoto && confirmaInteresse.checked){
+        fbq('track', 'Lead', {
+          content_name: 'LP Seguro Auto',
+          prioridade: prioridade,
+          pontos: totalPoints
+        });
+      } else if(isMoto){
+        fbq('trackCustom', 'ListaEsperaMoto', {
+          content_name: 'LP Seguro Auto - Lista de espera Moto'
+        });
+      }
     }
 
     var msg = isMoto
