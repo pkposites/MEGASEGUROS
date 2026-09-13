@@ -203,6 +203,10 @@ fbq('track', 'PageView');
   }
   .form-error{color:var(--vinho); font-size:.82rem; margin-top:6px; display:none;}
   .privacy-note{font-size:.75rem; color:#999; margin-top:14px; text-align:center;}
+  .moto-alert{
+    display:none; margin-top:14px; background:#fdf1e7; border:1px solid #e8c79a;
+    color:#7a4a15; font-size:.85rem; padding:12px 14px; border-radius:8px;
+  }
 
   /* FAQ */
   .faq-item{border-bottom:1px solid #e2d8c7; padding:18px 0;}
@@ -308,7 +312,8 @@ fbq('track', 'PageView');
 <section>
   <div class="container">
     <h2 class="section-title">Escolha o plano ideal para a sua rotina</h2>
-    <p class="section-sub">Dois planos pensados para diferentes perfis de condutor — o especialista te ajuda a escolher o certo no WhatsApp.</p>
+    <p class="section-sub">Dois planos pensados para diferentes perfis de condutor — o especialista te ajuda a escolher o certo no WhatsApp.<br>
+    <strong>Atenção:</strong> por enquanto atendemos apenas carros. Ainda não temos seguro para motos.</p>
     <div class="planos-grid">
       <div class="plano-card">
         <span class="tag">ESSENCIAL</span>
@@ -420,6 +425,10 @@ fbq('track', 'PageView');
               <div class="option-card" data-value="Moto">Moto</div>
             </div>
             <div class="form-error">Selecione uma opção para continuar.</div>
+            <div class="moto-alert" id="moto-alert">
+              ⚠️ No momento a Mega Seguros ainda não atende motos — cobrimos apenas carros.
+              Assim que abrirmos essa modalidade na sua região, avisamos você.
+            </div>
           </div>
         </div>
 
@@ -489,6 +498,10 @@ fbq('track', 'PageView');
       <p>Sim. A contratação não passa por consulta de CEP, SPC ou Serasa — o processo é simples e rápido.</p>
     </details>
     <details class="faq-item">
+      <summary>Vocês fazem seguro para moto?</summary>
+      <p>Ainda não. No momento a Mega Seguros atende apenas carros. Deixe seu contato que avisamos assim que a modalidade moto for lançada na sua região.</p>
+    </details>
+    <details class="faq-item">
       <summary>A Mega Seguros é a patrocinadora do Fluminense?</summary>
       <p>Sim! A Mega Seguros é patrocinadora oficial do Fluminense Football Club, reforçando o compromisso com credibilidade e proximidade com o torcedor.</p>
     </details>
@@ -534,6 +547,8 @@ fbq('track', 'PageView');
   var formTitle = document.getElementById('form-title');
   var formSub = document.getElementById('form-sub');
 
+  var motoAlert = document.getElementById('moto-alert');
+
   document.querySelectorAll('.option-card').forEach(function(card){
     card.addEventListener('click', function(){
       var group = card.parentElement.getAttribute('data-group');
@@ -542,6 +557,12 @@ fbq('track', 'PageView');
       card.classList.add('selected');
       answers[group] = card.getAttribute('data-value');
       hideError(card.closest('.step'));
+
+      if(group === 'tipo_veiculo'){
+        var isMoto = card.getAttribute('data-value') === 'Moto';
+        motoAlert.style.display = isMoto ? 'block' : 'none';
+        btnAvancar.textContent = isMoto ? 'Quero ser avisado quando abrir' : 'Continuar →';
+      }
     });
   });
 
@@ -564,7 +585,28 @@ fbq('track', 'PageView');
     formTitle.textContent = stepTitles[step][0];
     formSub.textContent = stepTitles[step][1];
     btnVoltar.style.visibility = step === 1 ? 'hidden' : 'visible';
-    btnAvancar.textContent = step === totalSteps ? 'Receber minha cotação no WhatsApp' : 'Continuar →';
+
+    if(step === totalSteps){
+      btnAvancar.textContent = answers.tipo_veiculo === 'Moto'
+        ? 'Quero ser avisado quando abrir'
+        : 'Receber minha cotação no WhatsApp';
+    } else if(step === 2 && answers.tipo_veiculo === 'Moto'){
+      btnAvancar.textContent = 'Quero ser avisado quando abrir';
+    } else {
+      btnAvancar.textContent = 'Continuar →';
+    }
+
+    if(step === 2){
+      motoAlert.style.display = answers.tipo_veiculo === 'Moto' ? 'block' : 'none';
+    }
+
+    if(step === 4){
+      formTitle.textContent = answers.tipo_veiculo === 'Moto' ? 'Deixe seu contato' : stepTitles[4][0];
+      formSub.textContent = answers.tipo_veiculo === 'Moto'
+        ? 'Avisamos você assim que o seguro moto estiver disponível.'
+        : stepTitles[4][1];
+    }
+
     currentStep = step;
   }
 
@@ -599,6 +641,12 @@ fbq('track', 'PageView');
       showError(stepEl);
       return;
     }
+    // moto: pula a pergunta de urgência (não vendemos seguro moto) e vai direto pro contato
+    if(currentStep === 2 && answers.tipo_veiculo === 'Moto'){
+      answers.urgencia = 'Não se aplica (moto)';
+      goToStep(4);
+      return;
+    }
     if(currentStep < totalSteps){
       goToStep(currentStep + 1);
     } else {
@@ -607,28 +655,38 @@ fbq('track', 'PageView');
   });
 
   btnVoltar.addEventListener('click', function(){
+    if(currentStep === 4 && answers.tipo_veiculo === 'Moto'){
+      goToStep(2);
+      return;
+    }
     if(currentStep > 1) goToStep(currentStep - 1);
   });
 
   function submitLead(){
-    var prioridade = scoreLead();
+    var isMoto = answers.tipo_veiculo === 'Moto';
+    var prioridade = isMoto ? 'FORA DO ESCOPO (MOTO)' : scoreLead();
 
     // Dispara evento de conversão para o Meta Pixel, se estiver instalado
     if(typeof fbq === 'function'){
       fbq('track', 'Lead', {
-        content_name: 'LP Seguro Auto',
+        content_name: isMoto ? 'LP Seguro Auto - Lista de espera Moto' : 'LP Seguro Auto',
         prioridade: prioridade
       });
     }
 
-    var msg = "Olá! Vim pelo anúncio da Mega Seguros e quero uma cotação de seguro auto.\n" +
+    var msg = isMoto
+      ? ("Olá! Vim pelo anúncio da Mega Seguros. Tenho uma moto e gostaria de ser avisado(a) quando vocês abrirem seguro para motos.\n" +
+         "----------------------------\n" +
+         "Nome: " + answers.nome + "\n" +
+         "Cidade: " + (answers.cidade || "não informado") + "\n")
+      : ("Olá! Vim pelo anúncio da Mega Seguros e quero uma cotação de seguro auto.\n" +
       "----------------------------\n" +
       "Prioridade do lead: " + prioridade + "\n" +
       "Nome: " + answers.nome + "\n" +
       "Cidade: " + (answers.cidade || "não informado") + "\n" +
       "Já tem seguro? " + answers.tem_seguro + "\n" +
       "Tipo de veículo: " + answers.tipo_veiculo + "\n" +
-      "Quando quer fechar: " + answers.urgencia + "\n";
+      "Quando quer fechar: " + answers.urgencia + "\n");
 
     if(utm.utm_source || utm.utm_campaign){
       msg += "----------------------------\n" +
