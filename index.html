@@ -88,7 +88,11 @@ fbq('track', 'PageView');
     padding:8px 14px; border-radius:999px; font-size:.82rem; font-weight:600;
   }
   .hero-media{position:relative;}
-  .hero-media img{border-radius:16px; box-shadow:var(--sombra);}
+  .hero-illustration{
+    background:linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+    border-radius:16px; box-shadow:var(--sombra); padding:10px;
+  }
+  .hero-illustration svg{width:100%; height:auto; display:block;}
   .hero-price-tag{
     position:absolute; bottom:-18px; left:-18px; background:#fff; color:var(--verde);
     padding:14px 20px; border-radius:12px; box-shadow:0 10px 26px rgba(0,0,0,.18);
@@ -272,7 +276,54 @@ fbq('track', 'PageView');
       </div>
     </div>
     <div class="hero-media">
-      <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=900&q=80" alt="Família protegida pelo seguro Mega Seguros">
+      <div class="hero-illustration" role="img" aria-label="Ilustração de carro protegido por um escudo de segurança">
+        <svg viewBox="0 0 560 460" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="glow" cx="50%" cy="42%" r="60%">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.16"/>
+              <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+            </radialGradient>
+            <linearGradient id="shieldGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f6efe3"/>
+              <stop offset="100%" stop-color="#e7d9bf"/>
+            </linearGradient>
+          </defs>
+
+          <circle cx="280" cy="200" r="210" fill="url(#glow)"/>
+
+          <!-- raios de proteção -->
+          <g stroke="#ffffff" stroke-opacity="0.18" stroke-width="3" stroke-linecap="round">
+            <line x1="280" y1="30" x2="280" y2="70"/>
+            <line x1="120" y1="80" x2="150" y2="105"/>
+            <line x1="440" y1="80" x2="410" y2="105"/>
+            <line x1="70" y1="200" x2="105" y2="200"/>
+            <line x1="490" y1="200" x2="455" y2="200"/>
+          </g>
+
+          <!-- escudo -->
+          <path d="M280 40 L400 85 C400 210 355 300 280 350 C205 300 160 210 160 85 Z"
+                fill="url(#shieldGrad)" stroke="#7d2530" stroke-width="6"/>
+          <path d="M280 70 L375 105 C375 205 340 280 280 320 C220 280 185 205 185 105 Z"
+                fill="none" stroke="#0d3b34" stroke-width="3" stroke-opacity="0.35"/>
+
+          <!-- carro dentro do escudo -->
+          <g transform="translate(196,150)">
+            <rect x="0" y="60" width="168" height="42" rx="12" fill="#0d3b34"/>
+            <path d="M18 60 L38 22 C44 12 54 6 66 6 L104 6 C116 6 126 12 132 22 L150 60 Z" fill="#0d3b34"/>
+            <path d="M46 26 L58 14 L92 14 L102 26 Z" fill="#e7d9bf"/>
+            <circle cx="38" cy="104" r="18" fill="#1c1c1c"/>
+            <circle cx="38" cy="104" r="7" fill="#cfcfcf"/>
+            <circle cx="132" cy="104" r="18" fill="#1c1c1c"/>
+            <circle cx="132" cy="104" r="7" fill="#cfcfcf"/>
+            <rect x="10" y="70" width="20" height="10" rx="3" fill="#f6efe3"/>
+            <rect x="140" y="70" width="20" height="10" rx="3" fill="#f6efe3"/>
+          </g>
+
+          <!-- check de segurança -->
+          <circle cx="280" cy="235" r="26" fill="#7d2530"/>
+          <path d="M267 235 L277 246 L296 222" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
       <div class="hero-price-tag">
         <small>Seguro auto a partir de</small>
         <b>R$ 91,00/mês</b>
