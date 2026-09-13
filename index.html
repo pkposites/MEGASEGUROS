@@ -607,7 +607,7 @@ fbq('track', 'PageView');
   var camposOrigem = [
     'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
     'campaign_name', 'campaign_id', 'adset_name', 'adset_id', 'ad_name', 'ad_id',
-    'fbclid', 'gclid'
+    'site_source_name', 'placement', 'fbclid', 'gclid'
   ];
 
   var utm = {};
@@ -809,16 +809,30 @@ fbq('track', 'PageView');
     return true;
   }
 
+  function resolveFonte(utm){
+    var site = (utm.site_source_name || '').toLowerCase();
+    if(site === 'fb') return 'Facebook';
+    if(site === 'ig') return 'Instagram';
+    if(site === 'msg') return 'Messenger';
+    if(site === 'an') return 'Audience Network';
+    if(utm.gclid) return 'Google';
+    if(utm.utm_source) return utm.utm_source.charAt(0).toUpperCase() + utm.utm_source.slice(1);
+    if(utm.fbclid) return 'Facebook/Instagram';
+    return 'Não identificada';
+  }
+
   function montaTextoOrigem(utm){
-    var linhas = [];
-    if(utm.utm_source || utm.utm_medium) linhas.push("Canal: " + [utm.utm_source, utm.utm_medium].filter(Boolean).join(' / '));
-    if(utm.campaign_name || utm.utm_campaign) linhas.push("Campanha: " + (utm.campaign_name || utm.utm_campaign));
-    if(utm.adset_name) linhas.push("Conjunto de anúncios: " + utm.adset_name);
-    if(utm.ad_name || utm.utm_content) linhas.push("Anúncio: " + (utm.ad_name || utm.utm_content));
-    if(utm.utm_term) linhas.push("Termo/Público: " + utm.utm_term);
-    if(utm.fbclid) linhas.push("Origem: Meta Ads (Facebook/Instagram)");
-    if(utm.gclid) linhas.push("Origem: Google Ads");
-    return linhas.length ? ("Origem do lead:\n" + linhas.join("\n")) : "";
+    var campanha = utm.campaign_name || utm.utm_campaign || 'Não identificada';
+    var conjunto = utm.adset_name || 'Não identificado';
+    var anuncio = utm.ad_name || utm.utm_content || 'Não identificado';
+    var fonte = resolveFonte(utm);
+
+    // formato padrão exigido em toda mensagem de lead: campanha, conjunto, anúncio e fonte
+    return "Origem do lead:\n" +
+      "Campanha: " + campanha + "\n" +
+      "Conjunto: " + conjunto + "\n" +
+      "Anúncio: " + anuncio + "\n" +
+      "Fonte: " + fonte;
   }
 
   function scoreLead(){
