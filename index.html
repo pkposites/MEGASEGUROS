@@ -224,10 +224,6 @@ fbq('track', 'PageView');
   }
   .form-error{color:var(--vinho); font-size:.82rem; margin-top:6px; display:none;}
   .privacy-note{font-size:.75rem; color:#999; margin-top:14px; text-align:center;}
-  .moto-alert{
-    display:none; margin-top:14px; background:#fdf1e7; border:1px solid #e8c79a;
-    color:#7a4a15; font-size:.85rem; padding:12px 14px; border-radius:8px;
-  }
 
   /* FAQ */
   .faq-item{border-bottom:1px solid #e2d8c7; padding:18px 0;}
@@ -364,8 +360,7 @@ fbq('track', 'PageView');
 <section>
   <div class="container">
     <h2 class="section-title">Escolha o plano ideal para a sua rotina</h2>
-    <p class="section-sub">Dois planos pensados para diferentes perfis de condutor — o especialista te ajuda a escolher o certo no WhatsApp.<br>
-    <strong>Atenção:</strong> por enquanto atendemos apenas carros. Ainda não temos seguro para motos.</p>
+    <p class="section-sub">Planos pensados para diferentes perfis de condutor — carros e motos — o especialista te ajuda a escolher o certo no WhatsApp.</p>
     <div class="planos-grid">
       <div class="plano-card">
         <span class="tag">ESSENCIAL</span>
@@ -486,10 +481,6 @@ fbq('track', 'PageView');
               <div class="option-card" data-value="Moto">Moto</div>
             </div>
             <div class="form-error">Selecione uma opção para continuar.</div>
-            <div class="moto-alert" id="moto-alert">
-              ⚠️ <b>Importante:</b> no momento a Mega Seguros ainda não atende motos — cobrimos apenas carros de passeio.
-              Se quiser, deixe seu contato que avisamos assim que abrirmos essa modalidade na sua região.
-            </div>
             <div class="mini-feedback" data-feedback-for="tipo_veiculo"></div>
           </div>
         </div>
@@ -574,7 +565,7 @@ fbq('track', 'PageView');
     </details>
     <details class="faq-item">
       <summary>Vocês fazem seguro para moto?</summary>
-      <p>Ainda não. No momento a Mega Seguros atende apenas carros. Deixe seu contato que avisamos assim que a modalidade moto for lançada na sua região.</p>
+      <p>Sim! A Mega Seguros também atende motos. Preencha o formulário e um especialista te passa as condições certas para o seu modelo.</p>
     </details>
     <details class="faq-item">
       <summary>A Mega Seguros é a patrocinadora do Fluminense?</summary>
@@ -626,7 +617,6 @@ fbq('track', 'PageView');
   var answers = { tem_seguro:'', tipo_veiculo:'', urgencia:'', nome:'', cidade:'' };
   var currentStep = 1;
   var totalSteps = 5;
-  var isMotoFlow = false;
   var totalPoints = 0;
 
   var stepTitles = {
@@ -645,7 +635,7 @@ fbq('track', 'PageView');
       'Não sei / quero entender': 15
     },
     tipo_veiculo: {
-      'Carro popular': 20, 'Carro médio/SUV': 20, 'Carro de luxo': 20, 'Moto': 0
+      'Carro popular': 20, 'Carro médio/SUV': 20, 'Carro de luxo': 20, 'Moto': 20
     },
     urgencia: {
       'Hoje/esta semana': 30, 'Este mês': 20, 'Só pesquisando preço': 5, 'Ainda não sei': 10
@@ -674,7 +664,6 @@ fbq('track', 'PageView');
   var formSub = document.getElementById('form-sub');
   var pointsValue = document.getElementById('points-value');
   var pointsBadge = document.getElementById('points-badge');
-  var motoAlert = document.getElementById('moto-alert');
   var confirmaInteresse = document.getElementById('confirma-interesse');
 
   confirmaInteresse.addEventListener('change', function(){
@@ -715,12 +704,6 @@ fbq('track', 'PageView');
         }
       }
 
-      if(group === 'tipo_veiculo'){
-        var isMoto = value === 'Moto';
-        isMotoFlow = isMoto;
-        motoAlert.style.display = isMoto ? 'block' : 'none';
-        btnAvancar.textContent = isMoto ? 'Quero ser avisado quando abrir' : 'Continuar →';
-      }
     });
   });
 
@@ -766,19 +749,8 @@ fbq('track', 'PageView');
     btnVoltar.style.visibility = step === 1 ? 'hidden' : 'visible';
     btnAvancar.textContent = 'Continuar →';
 
-    if(step === 2){
-      motoAlert.style.display = answers.tipo_veiculo === 'Moto' ? 'block' : 'none';
-      if(answers.tipo_veiculo === 'Moto') btnAvancar.textContent = 'Quero ser avisado quando abrir';
-    }
-
     if(step === 4){
-      if(isMotoFlow){
-        formTitle.textContent = 'Deixe seu contato';
-        formSub.textContent = 'Avisamos você assim que o seguro moto estiver disponível.';
-        btnAvancar.textContent = 'Quero ser avisado quando abrir';
-      } else {
-        btnAvancar.textContent = 'Ver meu resultado →';
-      }
+      btnAvancar.textContent = 'Ver meu resultado →';
     }
 
     if(step === 5){
@@ -849,28 +821,6 @@ fbq('track', 'PageView');
       return;
     }
 
-    // moto: pula a pergunta de urgência (não vendemos seguro moto) e vai direto pro contato
-    if(currentStep === 2 && answers.tipo_veiculo === 'Moto'){
-      isMotoFlow = true;
-      answers.urgencia = 'Não se aplica (moto)';
-      goToStep(4);
-      return;
-    }
-
-    if(currentStep === 3){
-      goToStep(4);
-      return;
-    }
-
-    if(currentStep === 4){
-      if(isMotoFlow){
-        submitLead();
-      } else {
-        goToStep(5);
-      }
-      return;
-    }
-
     if(currentStep === 5){
       submitLead();
       return;
@@ -880,75 +830,54 @@ fbq('track', 'PageView');
   });
 
   btnVoltar.addEventListener('click', function(){
-    if(currentStep === 4 && isMotoFlow){
-      goToStep(2);
-      return;
-    }
-    if(currentStep === 5){
-      goToStep(4);
-      return;
-    }
     if(currentStep > 1) goToStep(currentStep - 1);
   });
 
   function submitLead(){
-    var isMoto = isMotoFlow;
-    var prioridade = isMoto ? 'FORA DO ESCOPO (MOTO)' : scoreLead();
+    var prioridade = scoreLead();
 
     // O evento padrão "Lead" (qualificado) só dispara quando o usuário marcou a
-    // caixa de confirmação de interesse. O fluxo de moto (lista de espera) nunca
-    // passa por essa caixa, então usa um evento customizado à parte.
-    if(typeof fbq === 'function'){
-      if(!isMoto && confirmaInteresse.checked){
-        fbq('track', 'Lead', {
-          content_name: 'LP Seguro Auto',
-          prioridade: prioridade,
-          pontos: totalPoints
-        });
-      } else if(isMoto){
-        fbq('trackCustom', 'ListaEsperaMoto', {
-          content_name: 'LP Seguro Auto - Lista de espera Moto'
-        });
-      }
+    // caixa de confirmação de interesse, garantida pela validação do step 5.
+    if(typeof fbq === 'function' && confirmaInteresse.checked){
+      fbq('track', 'Lead', {
+        content_name: 'LP Seguro Auto',
+        prioridade: prioridade,
+        pontos: totalPoints
+      });
     }
 
     var primeiroNome = (answers.nome || '').trim().split(' ')[0];
     var cidadeTexto = answers.cidade ? (' Sou de ' + answers.cidade + '.') : '';
 
-    var msg;
-    if(isMoto){
-      msg = "Oi, boa tarde! Me chamo " + (primeiroNome || answers.nome) + " e vim pelo anúncio da Mega Seguros." +
-        cidadeTexto + " Tenho uma moto e gostaria de ser avisado(a) assim que vocês passarem a oferecer seguro para motos, pode ser?";
-    } else {
-      var fraseSeguro = {
-        'Não tenho seguro': 'Ainda não tenho seguro para o meu carro',
-        'Tenho, mas está vencendo': 'Meu seguro atual está vencendo',
-        'Tenho seguro vigente': 'Já tenho seguro vigente, mas quero comparar',
-        'Não sei / quero entender': 'Não sei bem como funciona e queria entender melhor'
-      }[answers.tem_seguro] || '';
+    var fraseSeguro = {
+      'Não tenho seguro': 'Ainda não tenho seguro',
+      'Tenho, mas está vencendo': 'Meu seguro atual está vencendo',
+      'Tenho seguro vigente': 'Já tenho seguro vigente, mas quero comparar',
+      'Não sei / quero entender': 'Não sei bem como funciona e queria entender melhor'
+    }[answers.tem_seguro] || '';
 
-      var fraseVeiculo = {
-        'Carro popular': 'um carro popular',
-        'Carro médio/SUV': 'um carro médio/SUV',
-        'Carro de luxo': 'um carro de luxo'
-      }[answers.tipo_veiculo] || answers.tipo_veiculo;
+    var fraseVeiculo = {
+      'Carro popular': 'um carro popular',
+      'Carro médio/SUV': 'um carro médio/SUV',
+      'Carro de luxo': 'um carro de luxo',
+      'Moto': 'uma moto'
+    }[answers.tipo_veiculo] || answers.tipo_veiculo;
 
-      var fraseUrgencia = {
-        'Hoje/esta semana': 'e quero fechar ainda hoje ou esta semana',
-        'Este mês': 'e pretendo fechar ainda este mês',
-        'Só pesquisando preço': 'mas por enquanto só estou pesquisando preço',
-        'Ainda não sei': 'mas ainda não decidi quando vou fechar'
-      }[answers.urgencia] || '';
+    var fraseUrgencia = {
+      'Hoje/esta semana': 'e quero fechar ainda hoje ou esta semana',
+      'Este mês': 'e pretendo fechar ainda este mês',
+      'Só pesquisando preço': 'mas por enquanto só estou pesquisando preço',
+      'Ainda não sei': 'mas ainda não decidi quando vou fechar'
+    }[answers.urgencia] || '';
 
-      msg = "Oi, boa tarde! Me chamo " + (primeiroNome || answers.nome) + " e vim pelo anúncio da Mega Seguros." +
-        cidadeTexto + " Quero fazer a cotação do meu seguro auto agora.\n\n" +
-        fraseSeguro + ". Meu veículo é " + fraseVeiculo + ", " + fraseUrgencia + ".";
-    }
+    var msg = "Oi, boa tarde! Me chamo " + (primeiroNome || answers.nome) + " e vim pelo anúncio da Mega Seguros." +
+      cidadeTexto + " Quero fazer a cotação do meu seguro agora.\n\n" +
+      fraseSeguro + ". Meu veículo é " + fraseVeiculo + ", " + fraseUrgencia + ".";
 
     // Nota interna para o atendimento: prioridade, pontuação e origem do anúncio.
     // Fica separada da mensagem "do lead" para manter o tom de primeiro contato acima.
     var notaInterna = "\n\n— nota interna —\n" +
-      (isMoto ? "Fora do escopo (moto, lista de espera)" : ("Prioridade: " + prioridade + " (" + totalPoints + " pts)")) + "\n" +
+      "Prioridade: " + prioridade + " (" + totalPoints + " pts)\n" +
       montaTextoOrigem(utm);
 
     msg += notaInterna;
