@@ -86,7 +86,14 @@ fbq('track', 'PageView');
   .hero-badge{
     background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.25);
     padding:8px 14px; border-radius:999px; font-size:.82rem; font-weight:600;
+    display:inline-flex; align-items:center; gap:6px;
   }
+  .badge-logo{width:16px; height:16px; flex-shrink:0;}
+  .fluminense-line{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    text-align:center; margin-top:34px; font-weight:700; color:var(--verde);
+  }
+  .fluminense-logo-inline{width:28px; height:28px; flex-shrink:0;}
   .hero-media{position:relative;}
   .hero-illustration{
     background:linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,0));
@@ -284,7 +291,7 @@ fbq('track', 'PageView');
         <span class="hero-badge">📄 Apólice individual no seu nome</span>
         <span class="hero-badge">🚫 Sem consulta de CEP, SPC ou Serasa</span>
         <span class="hero-badge">🕐 Assistência 24h própria</span>
-        <span class="hero-badge">🟢⚪⚫ Patrocinadora oficial do Fluminense</span>
+        <span class="hero-badge hero-badge-fluminense"><img src="fluminense-logo-footylogos.svg" alt="Fluminense" class="badge-logo"> Patrocinadora oficial do Fluminense</span>
       </div>
     </div>
     <div class="hero-media">
@@ -415,8 +422,9 @@ fbq('track', 'PageView');
         <p>Reboque, chaveiro, pane seca e troca de pneu quando você precisar.</p>
       </div>
     </div>
-    <p style="text-align:center; margin-top:34px; font-weight:700; color:var(--verde);">
-      🟢⚪⚫ Orgulho de ser patrocinadora oficial do Fluminense Football Club
+    <p class="fluminense-line">
+      <img src="fluminense-logo-footylogos.svg" alt="Fluminense" class="fluminense-logo-inline">
+      Orgulho de ser patrocinadora oficial do Fluminense Football Club
     </p>
   </div>
 </section>
